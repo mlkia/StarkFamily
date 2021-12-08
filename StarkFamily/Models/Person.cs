@@ -16,9 +16,10 @@ namespace StarkFamily.Models
 
         [ForeignKey("Father")]
         public int? FatherId { get; set; }
-
+        //public int? PartnerId { get; set; }
         public virtual Person Father { get; set; }
         public virtual ICollection<Person> Children { get; set; }
+
 
         //[ForeignKey("Mother")]
         //public int? MotherId { get; set; }

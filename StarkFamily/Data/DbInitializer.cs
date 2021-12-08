@@ -20,7 +20,7 @@ namespace StarkFamily.Data
 
             var persons = new Person[]
             {
-            new Person{Id=1, FirstName="Rickard",LastName="Stark", BirthDate=DateTime.Parse("1936-03-17"), DeathDate=DateTime.Parse("1986-9-21")},
+            new Person{Id=1, FirstName="Rickard",LastName="Stark", BirthDate=DateTime.Parse("1936-03-17"), DeathDate=DateTime.Parse("1986-9-21"),},
             new Person{Id=2, FirstName="Mother",LastName="Stark", BirthDate=DateTime.Parse("1936-03-17"), DeathDate=DateTime.Parse("1986-9-21")},
             new Person{Id=3, FirstName="Brandon",LastName="Stark", BirthDate=DateTime.Parse("1936-03-17"),DeathDate=DateTime.Parse("1986-9-21"),FatherId=1,/*MotherId=2*/},
             new Person{FirstName="Eddard",LastName="Stark", BirthDate=DateTime.Parse("1936-03-17"), DeathDate=DateTime.Parse("1986-9-21"),FatherId=1},
