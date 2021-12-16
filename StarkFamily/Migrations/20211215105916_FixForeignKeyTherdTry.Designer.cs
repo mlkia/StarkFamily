@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StarkFamily.Data;
 
 namespace StarkFamily.Migrations
 {
     [DbContext(typeof(FamilyContext))]
-    partial class FamilyContextModelSnapshot : ModelSnapshot
+    [Migration("20211215105916_FixForeignKeyTherdTry")]
+    partial class FixForeignKeyTherdTry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,8 +48,6 @@ namespace StarkFamily.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FatherId");
-
                     b.HasIndex("MotherId");
 
                     b.ToTable("Persons");
@@ -55,24 +55,16 @@ namespace StarkFamily.Migrations
 
             modelBuilder.Entity("StarkFamily.Models.Person", b =>
                 {
-                    b.HasOne("StarkFamily.Models.Person", "Father")
-                        .WithMany("FatherChildren")
-                        .HasForeignKey("FatherId");
-
-                    b.HasOne("StarkFamily.Models.Person", "Mother")
-                        .WithMany("MotherChildren")
+                    b.HasOne("StarkFamily.Models.Person", "Parents")
+                        .WithMany("Children")
                         .HasForeignKey("MotherId");
 
-                    b.Navigation("Father");
-
-                    b.Navigation("Mother");
+                    b.Navigation("Parents");
                 });
 
             modelBuilder.Entity("StarkFamily.Models.Person", b =>
                 {
-                    b.Navigation("FatherChildren");
-
-                    b.Navigation("MotherChildren");
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace StarkFamily.Models
 {
+    
     public class Person
     {
         public int Id { get; set; }
@@ -14,21 +16,23 @@ namespace StarkFamily.Models
         public DateTime BirthDate { get; set; }
         public DateTime? DeathDate { get; set; }
 
-        [ForeignKey("Father")]
         public int? FatherId { get; set; }
-        //public int? PartnerId { get; set; }
+        [ForeignKey("FatherId")]
         public virtual Person Father { get; set; }
-        public virtual ICollection<Person> Children { get; set; }
+        public virtual ICollection<Person> FatherChildren { get; set; }
+        public int? MotherId { get; set; }
+        [ForeignKey("MotherId")]
+        public virtual Person Mother { get; set; }
 
-
-        //[ForeignKey("Mother")]
-        //public int? MotherId { get; set; }
-
-
-
-        //public virtual Person Mother { get; set; }
-
-
+        public virtual ICollection<Person> MotherChildren { get; set; }
 
     }
+
+    //public class Parents
+    //{
+    //    public Person Father { get; set; }
+    //    public Person Mother { get; set; }
+
+        
+    //}
 }

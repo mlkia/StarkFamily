@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StarkFamily.Data;
 
 namespace StarkFamily.Migrations
 {
     [DbContext(typeof(FamilyContext))]
-    partial class FamilyContextModelSnapshot : ModelSnapshot
+    [Migration("20211209085202_FixForeignkey")]
+    partial class FixForeignkey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,6 +34,10 @@ namespace StarkFamily.Migrations
                     b.Property<DateTime?>("DeathDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("FatherId")
                         .HasColumnType("int");
 
@@ -51,16 +57,25 @@ namespace StarkFamily.Migrations
                     b.HasIndex("MotherId");
 
                     b.ToTable("Persons");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Person");
+                });
+
+            modelBuilder.Entity("StarkFamily.Models.Mother", b =>
+                {
+                    b.HasBaseType("StarkFamily.Models.Person");
+
+                    b.HasDiscriminator().HasValue("Mother");
                 });
 
             modelBuilder.Entity("StarkFamily.Models.Person", b =>
                 {
                     b.HasOne("StarkFamily.Models.Person", "Father")
-                        .WithMany("FatherChildren")
+                        .WithMany("Children")
                         .HasForeignKey("FatherId");
 
-                    b.HasOne("StarkFamily.Models.Person", "Mother")
-                        .WithMany("MotherChildren")
+                    b.HasOne("StarkFamily.Models.Mother", "Mother")
+                        .WithMany("HerChildren")
                         .HasForeignKey("MotherId");
 
                     b.Navigation("Father");
@@ -70,9 +85,12 @@ namespace StarkFamily.Migrations
 
             modelBuilder.Entity("StarkFamily.Models.Person", b =>
                 {
-                    b.Navigation("FatherChildren");
+                    b.Navigation("Children");
+                });
 
-                    b.Navigation("MotherChildren");
+            modelBuilder.Entity("StarkFamily.Models.Mother", b =>
+                {
+                    b.Navigation("HerChildren");
                 });
 #pragma warning restore 612, 618
         }

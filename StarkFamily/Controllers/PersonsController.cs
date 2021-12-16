@@ -61,7 +61,7 @@ namespace StarkFamily.Controllers
 
         }
 
-        // GET: Father
+        
         
 
         // GET: Persons/Details/5
@@ -81,6 +81,7 @@ namespace StarkFamily.Controllers
             }
 
             var childe = await _context.Personos.Where(p => p.FatherId == id.Value).OrderBy(s => s.FirstName).ToListAsync();
+                childe = await _context.Personos.Where(p => p.MotherId == id.Value).OrderBy(s => s.FirstName).ToListAsync();
 
             if (childe == null)
             {
@@ -94,6 +95,7 @@ namespace StarkFamily.Controllers
         public IActionResult Create()
         {
             ViewData["FatherId"] = new SelectList(_context.Personos, "Id", "FirstName");
+            ViewData["MotherId"] = new SelectList(_context.Personos, "Id", "FirstName");
             return View();
         }
 
@@ -102,7 +104,7 @@ namespace StarkFamily.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,BirthDate,DeathDate,FatherId")] Person person)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,BirthDate,DeathDate,FatherId, MotherId")] Person person)
         {
             try
             {
@@ -123,6 +125,7 @@ namespace StarkFamily.Controllers
             }
 
             ViewData["FatherId"] = new SelectList(_context.Personos, "FatherId", "FatherId", person.FirstName);
+            ViewData["MotherId"] = new SelectList(_context.Personos, "MotherId", "MotherId", person.FirstName);
             return View(person);
         }
 
@@ -140,6 +143,7 @@ namespace StarkFamily.Controllers
                 return NotFound();
             }
             ViewData["FatherId"] = new SelectList(_context.Personos, "Id", "FirstName");
+            ViewData["MotherId"] = new SelectList(_context.Personos, "Id", "FirstName");
             return View(person);
         }
 
@@ -159,7 +163,7 @@ namespace StarkFamily.Controllers
             if (await TryUpdateModelAsync<Person>(
                     personToUpdate,
                     "",
-                s => s.FirstName, s => s.LastName, s => s.BirthDate, s => s.DeathDate, s => s.FatherId))
+                s => s.FirstName, s => s.LastName, s => s.BirthDate, s => s.DeathDate, s => s.FatherId, s => s.MotherId))
             {
                 try
                 {
@@ -174,6 +178,7 @@ namespace StarkFamily.Controllers
                 }
             }
             ViewData["FatherId"] = new SelectList(_context.Personos, "Id", "Id");
+            ViewData["MotherId"] = new SelectList(_context.Personos, "Id", "Id");
             return View(personToUpdate);
         }
 

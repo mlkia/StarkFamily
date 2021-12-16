@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StarkFamily.Data;
 
 namespace StarkFamily.Migrations
 {
     [DbContext(typeof(FamilyContext))]
-    partial class FamilyContextModelSnapshot : ModelSnapshot
+    [Migration("20211209092854_Return")]
+    partial class Return
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,14 +43,9 @@ namespace StarkFamily.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MotherId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("FatherId");
-
-                    b.HasIndex("MotherId");
 
                     b.ToTable("Persons");
                 });
@@ -56,23 +53,15 @@ namespace StarkFamily.Migrations
             modelBuilder.Entity("StarkFamily.Models.Person", b =>
                 {
                     b.HasOne("StarkFamily.Models.Person", "Father")
-                        .WithMany("FatherChildren")
+                        .WithMany("Children")
                         .HasForeignKey("FatherId");
 
-                    b.HasOne("StarkFamily.Models.Person", "Mother")
-                        .WithMany("MotherChildren")
-                        .HasForeignKey("MotherId");
-
                     b.Navigation("Father");
-
-                    b.Navigation("Mother");
                 });
 
             modelBuilder.Entity("StarkFamily.Models.Person", b =>
                 {
-                    b.Navigation("FatherChildren");
-
-                    b.Navigation("MotherChildren");
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

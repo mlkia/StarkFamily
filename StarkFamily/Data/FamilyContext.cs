@@ -17,7 +17,18 @@ namespace StarkFamily.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Person>().ToTable("Persons");
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Person>()
+            .HasOne(a => a.Mother)
+            .WithMany(a => a.MotherChildren)
+            .HasForeignKey(a => a.MotherId);
+
+            modelBuilder.Entity<Person>()
+            .HasOne(a => a.Father)
+            .WithMany(a => a.FatherChildren)
+            .HasForeignKey(a => a.FatherId);
+        
+        modelBuilder.Entity<Person>().ToTable("Persons");
         }
     }
 }
